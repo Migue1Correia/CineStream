@@ -1,64 +1,64 @@
+const btn = document.getElementById('botao-pesquisar');
+const input = document.getElementById('campo-busca');
+const containerResultados = document.getElementById('containerResultados');
+const tituloResultado = document.getElementById('tituloResultado');
+const card = document.getElementById('card');
+const poster = document.getElementById('poster');
+const titulo = document.getElementById('titulo');
+const ano = document.getElementById('ano');
+const genero = document.getElementById('genero');
+
 const API_KEY = 'edda1ba9'; 
 
-let historicoFilmes = [];
-async function buscarFilme(nomeDoFilme) {
-    // O nomeDoFilme passa pelo "tradutor" antes de virar URL
-    const url = `https://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(nomeDoFilme)}`;
+
+
+async function buscarFilme() {
+    const nomeDoFilme = input.value.trim();
+    const url = `https://www.omdbapi.com/?t=${encodeURIComponent(nomeDoFilme)}&apikey=${API_KEY}`;
 
     try {
         const resposta = await fetch(url);
         const dados = await resposta.json(); 
 
         if (dados.Response === "True") {
-            
-            const filmeFormatado = {
-                "Titulo": dados.Title,
-                "Ano": dados.Year,
-                "imdbID": dados.imdbID,
-                "Tipo": dados.Type === "movie" ? "Filme" : dados.Type,
-                "Poster": dados.Poster
-            };
-
-            // Adiciona o novo filme no INÍCIO da lista
-            historicoFilmes.unshift(filmeFormatado);
-
-            // Se a lista tiver mais de 5, remove o último (o mais antigo)
-            if (historicoFilmes.length > 5) {
-                historicoFilmes.pop();
-            }
-            exibirNoHTML(filmeFormatado);
+            exibirResultudos(dados);
         } else {
-            console.log("Filme não encontrado.");
+            tituloResultado.textContent = `Nenhum resultado encontrado para: ${nomeDoFilme}`;
+            containerResultados.innerHTML = ""; // Limpa resultados anteriores
         }
     } catch (erro) {
         console.error("Erro na requisição:", erro);
     }
 }
 
-function exibirHistoricoNoHTML(filme) {
-    const grid = document.getElementById('resultados');
+function exibirResultudos(dados) {
+
+    //esta removendo os espaços em branco do início e do fim do título para evitar erros de busca
+const tituloFormatado = input.value.trim();
+tituloResultado.textContent = `Resultados para: ${tituloFormatado}`;
+  //limitar a quantidade de caracteres do título para evitar erros de busca
+  dados.array.forEach((filme) =>  {
     
-   grid.innerHTML="";
-   historicoFilmes.forEach(filme =>{
-   grid.innerHTML += `
-        <div class="card-filme">
-            <img src="${filme.Poster}" alt="${filme.Titulo}">
-            <h2>${filme.Titulo}</h2>
-            <p>Ano: ${filme.Ano}</p>
-            <p>ID: ${filme.imdbID}</p>
-            <p>Tipo: ${filme.Tipo}</p>
+ 
+  let limite=28;
+  let titulo = filme.Title.trim();
+    if (titulo.length > limite) {
+        titulo = titulo.substring(0, limite) + "...";
+    }
+  //limpa o container de resultados antes de exibir o novo resultado
+    containerResultados.innerHTML = "";
+    //cria o card com os dados do filme e insere no container de resultados
+    const cardHTML = `
+        <div id="card">
+            <img id="poster" src="${filme.Poster}" alt="Poster do Filme">
+            <h3 id="titulo">${titulo}</h3>
+            <p id="ano">Ano: ${filme.Year}</p>
+            <p id="genero">Tipo: ${filme.Type === "movie" ? "Filme" : filme.Type}</p>
         </div>
     `;
-   });
+    //insere o card no container de resultados
+    containerResultados.innerHTML += cardHTML; 
+ });
 }
-//Ouve o click
-document.getElementById('botao-pesquisar').addEventListener('click', () => {
-    const valorDoInput = document.querySelector('.search-box input').value;
-    buscarFilme(valorDoInput);
-});
-//Ouve o Enter
-document.querySelector('campo-busca').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        buscarFilme(e.target.value);
-    }
-});
+
+btn.addEventListener('click', buscarFilme);
