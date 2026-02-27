@@ -1,6 +1,7 @@
 const btn = document.getElementById('botao-pesquisar');
 const input = document.getElementById('campo-busca');
 const containerResultados = document.getElementById('containerResultados');
+const containerCards = document.getElementById('containerCards');
 const tituloResultado = document.getElementById('tituloResultado');
 const card = document.getElementById('card');
 const poster = document.getElementById('poster');
@@ -14,30 +15,33 @@ const API_KEY = 'edda1ba9';
 
 async function buscarFilme() {
     const nomeDoFilme = input.value.trim();
-    const url = `https://www.omdbapi.com/?t=${encodeURIComponent(nomeDoFilme)}&apikey=${API_KEY}`;
+    const url = `https://www.omdbapi.com/?s=${encodeURIComponent(nomeDoFilme)}&apikey=${API_KEY}`;
 
     try {
         const resposta = await fetch(url);
         const dados = await resposta.json(); 
 
         if (dados.Response === "True") {
-            exibirResultudos(dados);
+            exibirResultados(dados);
         } else {
+            containerResultados.classList.remove("oculto");
             tituloResultado.textContent = `Nenhum resultado encontrado para: ${nomeDoFilme}`;
-            containerResultados.innerHTML = ""; // Limpa resultados anteriores
+            containerCards.innerHTML = ""; // Limpa resultados anteriores
         }
-    } catch (erro) {
-        console.error("Erro na requisição:", erro);
+    } catch (error) {
+        console.error("Erro na requisição:", error);
     }
 }
 
-function exibirResultudos(dados) {
+function exibirResultados(dados) {
 
     //esta removendo os espaços em branco do início e do fim do título para evitar erros de busca
 const tituloFormatado = input.value.trim();
+//limpa o container de resultados antes de exibir o novo resultado
+  containerCards.innerHTML = "";
 tituloResultado.textContent = `Resultados para: ${tituloFormatado}`;
   //limitar a quantidade de caracteres do título para evitar erros de busca
-  dados.array.forEach((filme) =>  {
+  dados.Search.forEach((filme) =>  {
     
  
   let limite=28;
@@ -45,20 +49,31 @@ tituloResultado.textContent = `Resultados para: ${tituloFormatado}`;
     if (titulo.length > limite) {
         titulo = titulo.substring(0, limite) + "...";
     }
-  //limpa o container de resultados antes de exibir o novo resultado
-    containerResultados.innerHTML = "";
+  
+  
     //cria o card com os dados do filme e insere no container de resultados
     const cardHTML = `
         <div id="card">
             <img id="poster" src="${filme.Poster}" alt="Poster do Filme">
             <h3 id="titulo">${titulo}</h3>
             <p id="ano">Ano: ${filme.Year}</p>
-            <p id="genero">Tipo: ${filme.Type === "movie" ? "Filme" : filme.Type}</p>
+            <p id="genero">Tipo: ${filme.Type}</p>
         </div>
     `;
     //insere o card no container de resultados
-    containerResultados.innerHTML += cardHTML; 
+    containerCards.innerHTML += cardHTML; 
  });
 }
 
 btn.addEventListener('click', buscarFilme);
+// Adiciona o evento de 'keypress' (tecla pressionada)
+input.addEventListener('keypress', (e) => {
+    // Verifica se a tecla pressionada foi o 'Enter'
+    if (e.key === 'Enter') {
+        // Pega o valor atual do input e chama a sua função de busca
+        buscarFilme(e.target.value);
+        
+        // Opcional: limpa o campo após a busca
+        e.target.value = "";
+    }
+});
