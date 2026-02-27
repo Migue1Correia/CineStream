@@ -4,36 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CineStream</title>
 </head>
-
 <body>
-    <div class="cabeçalho">
+    <header>
+        <h1>CineStream</h1>
+        <nav>       
+            <form action="/search" method="get">
+                <input type="text" name="query" placeholder="Pesqsuisar filmes...">
+                <button type="submit">Pesquisar</button>
+        </nav>
+    </header>
 
-        <header class="navbar">
-            <div class="logo">
-                <span class="icon">🎞️</span>
-                <h1>CineStream</h1>
-            </div>
+    <hr>
+    <!-- Área de resultados -->
+    <section id="resultados">
 
-            <nav class="nav-links">
-                <a href="#">Início</a>
-                <a href="#">Ação</a>
-                <a href="#" class="active">Ficção Científica</a>
-                <a href="#">Comédia</a>
-                <a href="#">Drama</a>
-            </nav>
+        <article class="filme">
 
-            <div class="search-container">
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" placeholder="Pesquisar">
+            <figure>
+                <img 
+                    src="poster.jpg" 
+                    alt="Poster oficial do filme Velocidade Máxima lançado em 2024">
+      
+                    <figcaption>
+                        <h3>Velocidade Máxima</h3>
+                            <p>2024 • Ação</p>
+                    </figcaption>
+            </figure>
+
+                <div class="descricao">
+                    <p>
+                        Um agente especial precisa impedir que uma organização criminosa 
+                        execute um plano de destruição em massa.
+                    </p>
                 </div>
-            </div>
-        </header>
 
+                <div class="acoes">
+                    <button type="button">Assistir Agora</button>
+                    <button type="button" class="mais-info">Mais Info</button>
+                </div>
 
+        </article>
 
+    </section>
+
+    <div class="CardsConteiner">
+        <h3>Filmes em Destaque</h3>
+            <div class="card"></div>
+                <img src="poster1.jpg" alt="Poster do filme Aventura Espacial">
+                    <h4>Aventura Espacial</h4>
+                    <p>2023 • Ficção Científica</p>
+                 <ul>
+                    <li>Ação</li>
+
+                </ul>
+            </div>   
+            
+            <div class="card"></div>
+                <img src="poster2.jpg" alt="Poster do filme Aventura Espacial">
+                    <h4>Como Treinar o Seu Dragão</h4>
+                    <p>2023 • Animação</p>
+                 <ul>
+                    <li>Aventura</li>
+
+                </ul>
+            </div>  
+            
+            <div class="card"></div>
+                <img src="poster3.jpg" alt="Poster do filme Os Croods">
+                    <h4>Os Croods</h4>
+                    <p>2023 • Animação</p>
+                 <ul>
+                    <li>Aventura</li>
+
+                </ul>
+            </div>   
+    </div>
+    <hr>
+
+    <div class="CardsConteiner2">
+        <h3>Ação</h3>
+            <div class="card"></div>
+                <img src="poster4.jpg" alt="Poster do filme Aventura Espacial">
+                    <h4>007</h4>
+                    <p>2023 • Ficção Científica</p>
+                 <ul>
+                    <li>Ação</li>
+
+                </ul>
+            </div>   
+            
+            <div class="card"></div>
+                <img src="poster2.jpg" alt="Poster do filme Aventura Espacial">
+                    <h4>Homem Aranha</h4>
+                    <p>2023 • Ação</p>
+                 <ul>
+                    <li>Ação</li>
+
+                </ul>
+            </div>  
+            
+            <div class="card"></div>
+                <img src="poster3.jpg" alt="Poster do filme Os Croods">
+                    <h4>Homem de Ferro</h4>
+                    <p>2023 • Ação</p>
+                 <ul>
+                    <li>Ação</li>
+
+                </ul>
+            </div>   
+    </div>
+
+    <hr>
+
+    <section id="Filtros">
+        <div class="Filtro">
+            <button type="button">Ação</button>
+            <button type="button">Comédia</button>
+            <button type="button">Drama</button>
+            <button type="button">Ficção Científica</button>
+            <button type="button">Animação</button>
+
+        </div>
+    </section>
+    
 </body>
-
 </html>
