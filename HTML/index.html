@@ -10,9 +10,12 @@
     <header>
         <h1>CineStream</h1>
         <nav>       
-            <form action="/search" method="get">
-                <input type="text" name="query" placeholder="Pesqsuisar filmes...">
-                <button type="submit">Pesquisar</button>
+           
+            <div class="search-box">
+            <input type="text" id="campo-busca" placeholder="Pesquisar filmes...">
+            <button type="button" id="botao-pesquisar">Pesquisar</button>
+        </div>
+
         </nav>
     </header>
 
@@ -128,6 +131,6 @@
 
         </div>
     </section>
-    
+    <script src="BuscaT.js"></script>
 </body>
 </html>

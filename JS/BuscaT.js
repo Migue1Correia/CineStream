@@ -1,10 +1,13 @@
-const API_KEY = 'https://www.omdbapi.com/?s=TERMO_DE_BUSCA&apikey=SUA_CHAVE'; 
+const API_KEY = 'edda1ba9'; 
+
+let historicoFilmes = [];
 async function buscarFilme(nomeDoFilme) {
-    const url = `https://www.omdbapi.com/?apikey=${API_KEY}&t=${nomeDoFilme}`;
+    // O nomeDoFilme passa pelo "tradutor" antes de virar URL
+    const url = `https://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(nomeDoFilme)}`;
 
     try {
         const resposta = await fetch(url);
-        const dados = await resposta.json();
+        const dados = await resposta.json(); 
 
         if (dados.Response === "True") {
             
@@ -16,6 +19,13 @@ async function buscarFilme(nomeDoFilme) {
                 "Poster": dados.Poster
             };
 
+            // Adiciona o novo filme no INÍCIO da lista
+            historicoFilmes.unshift(filmeFormatado);
+
+            // Se a lista tiver mais de 5, remove o último (o mais antigo)
+            if (historicoFilmes.length > 5) {
+                historicoFilmes.pop();
+            }
             exibirNoHTML(filmeFormatado);
         } else {
             console.log("Filme não encontrado.");
@@ -25,11 +35,12 @@ async function buscarFilme(nomeDoFilme) {
     }
 }
 
-function exibirNoHTML(filme) {
-    const grid = document.getElementById('movie-grid');
+function exibirHistoricoNoHTML(filme) {
+    const grid = document.getElementById('resultados');
     
-   
-    grid.innerHTML = `
+   grid.innerHTML="";
+   historicoFilmes.forEach(filme =>{
+   grid.innerHTML += `
         <div class="card-filme">
             <img src="${filme.Poster}" alt="${filme.Titulo}">
             <h2>${filme.Titulo}</h2>
@@ -38,10 +49,15 @@ function exibirNoHTML(filme) {
             <p>Tipo: ${filme.Tipo}</p>
         </div>
     `;
+   });
 }
-
-
-document.querySelector('.search-box input').addEventListener('keypress', (e) => {
+//Ouve o click
+document.getElementById('botao-pesquisar').addEventListener('click', () => {
+    const valorDoInput = document.querySelector('.search-box input').value;
+    buscarFilme(valorDoInput);
+});
+//Ouve o Enter
+document.querySelector('campo-busca').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         buscarFilme(e.target.value);
     }
