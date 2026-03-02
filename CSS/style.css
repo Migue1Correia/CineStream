@@ -4,6 +4,13 @@ body {
     color: #ffffff;
     font-family: 'Arial', sans-serif;
     margin: 0;
+    
+}
+
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 header {
@@ -110,6 +117,4 @@ header {
 }
 
 /* Classe para esconder antes da busca */
-.oculto {
-    display: none;
-}
+
